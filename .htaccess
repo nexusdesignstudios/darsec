@@ -1,0 +1,75 @@
+# .htaccess file for Hostinger PHP optimization
+# Upload this to your public_html directory
+
+# Set index.html as default page (before index.php)
+DirectoryIndex index.html index.php
+
+# Language detection and redirection
+RewriteEngine On
+RewriteCond %{HTTP:Accept-Language} ^de [NC]
+RewriteCond %{REQUEST_URI} ^/$ [NC]
+RewriteRule ^$ index.de.html [L,R=302]
+
+# Allow manual language selection
+RewriteCond %{REQUEST_URI} ^/index\.de\.html$ [NC]
+RewriteRule ^index\.de\.html$ - [L]
+
+# Enable PHP error display (remove in production)
+php_flag display_errors on
+php_value error_reporting E_ALL
+
+# Set default charset
+AddDefaultCharset UTF-8
+
+# URL rewriting for clean URLs
+RewriteEngine On
+
+# Security headers
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-Frame-Options DENY
+    Header always set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# Hide .htaccess file
+<Files .htaccess>
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Block access to config files
+<Files config.php>
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Custom error pages
+ErrorDocument 404 /404.html
+ErrorDocument 500 /500.html
+
+# Gzip compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+</IfModule>
+
+# Cache control
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/jpg "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/ico "access plus 1 month"
+    ExpiresByType image/icon "access plus 1 month"
+    ExpiresByType text/html "access plus 1 hour"
+</IfModule>
