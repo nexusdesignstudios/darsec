@@ -4,15 +4,7 @@
 # Set index.html as default page (before index.php)
 DirectoryIndex index.html index.php
 
-# Language detection and redirection
-RewriteEngine On
-RewriteCond %{HTTP:Accept-Language} ^de [NC]
-RewriteCond %{REQUEST_URI} ^/$ [NC]
-RewriteRule ^$ index.de.html [L,R=302]
 
-# Allow manual language selection
-RewriteCond %{REQUEST_URI} ^/index\.de\.html$ [NC]
-RewriteRule ^index\.de\.html$ - [L]
 
 # Enable PHP error display (remove in production)
 php_flag display_errors on
